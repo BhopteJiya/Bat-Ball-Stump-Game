@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+    body{
+        text-align: center;
+        border:solid;
+        border-width: 10 px;
+        height:600px;
+        background-color: rgb(175, 213, 233);
+    }
+    .choice_image{
+      height: 200px;
+      
+    }
+    .heading{
+      color: rgb(19, 35, 80);
+      
+    }
+    .button{
+      margin-left: 10px;
+      border-radius: 100px;
+      height: 200px;
+      border:none;
+      background-color: rgb(153, 230, 109);
+    }
+  .reset{
+    height: 40px;
+    width: 100px;
+   background-color:rgb(252, 174, 174) ;
+  }
+  
+  </style>
+</head>
+<body>
+ <h1
+ class="heading" > [  Bat-Ball-Stump Game  ]</h1>
+   
+
+    <button  class="button"  onclick="
+
+       comp= Gen_compFunc();
+       resultms= result(comp,'bat');
+       show(comp,'bat',resultms);
+
+      ">
+      <img src="images/32004-5-cricket-bat-photos-thumb.png" alt="bat image" class="choice_image">   
+
+    </button>
+     <button  class="button"  onclick="
+
+      comp=Gen_compFunc();
+      resultms=result(comp,'ball');
+      show(comp,'ball',resultms);
+
+  ">
+  <img src="images/cricket_PNG73.png" alt="  ball image" class="choice_image">   
+</button>
+    <button  class="button" onclick="
+  
+    comp=Gen_compFunc();
+    resultms= result(comp,'stump');
+    show(comp,'stump',resultms);
+
+    ">
+    <img src="images/cricket-stump-png-md.png" alt="stump image" class="choice_image">   
+  </button>  
+    
+
+      <h2 id="user_move"></h2>
+      <h2 id="comp_move"></h2>
+      <h2 id="result"></h2>
+      <h2 id="score"></h2>
+
+      <button  class="reset"  onclick="localStorage.clear();
+      resetscore();
+       ">RESET</button>
+  
+    <script>
+
+
+
+      let strscore= localStorage.getItem('score');
+      let score;
+       resetscore(strscore);
+
+      function resetscore(strscore){
+   score=strscore ? JSON.parse(strscore) :
+   {
+     win:0,
+     lost:0,
+     tie:0,
+    } 
+    score.displayScore =function(){
+        return ` win:${score.win}, lost:${score.lost}, tie: ${score.tie}`
+      }
+      show();
+    };
+        let comp;let resultms;
+        function Gen_compFunc(){
+  
+        let r_no = Math.random()*3;
+        if(r_no >0 && r_no <=1){
+      return 'bat';
+        }
+        else if(r_no >1 && r_no <=2){
+        return'ball';
+        }
+        else{
+        return'stump';
+ }
+}
+ function result(comp_move,user_move){
+    if(user_move=== "bat"){
+        if(comp_move===user_move){
+          score.tie++;
+        return "its a tie! ";
+    }
+        else if(comp_move==="ball"){
+          score.win++;
+        return "user wonn ";
+    }
+        else{
+          score.lost++;
+        return "comp wonn ! ";
+        }
+    }else if(user_move==="ball"){
+      if(comp_move===user_move){
+        score.tie++;
+        return "its a tie! ";
+    }else if(comp_move==="bat"){
+      score.lost++;
+      return "comp  wonn !";
+   } else
+   score.lost++;
+   return "comp wonn ! ";
+    }
+    else{
+      if(comp_move===user_move){
+        score.tie++;
+        return "its a tie! ";
+      }
+      else if(comp_move==="ball"){
+        score.win++;
+        return "user wonn! ";
+      }
+      else{
+        score.win++;}
+      return "user wonn ! ";
+    }
+    
+ }
+ function show(comp_move,user_move,resultms){
+ // console.log(score);
+  localStorage.setItem('score',JSON.stringify(score));
+ 
+  document.querySelector('#user_move').innerText=user_move?`jiya has choosen to ${user_move}`:'';
+  document.querySelector('#comp_move').innerText=comp_move?`comp has choosen to ${comp_move}`:'';
+  document.querySelector('#result').innerText=resultms||" ";
+  document.querySelector ('#score').innerText= score.displayScore();
+
+ /* alert(`jiya has choosen to ${user_move} and 
+         computer choice is ${ comp_move}
+         so *** ${resultms} *** 
+
+         ${score.displayScore()}
+      `);
+*/
+ } 
+    </script>
+</body>
+</htmL>
